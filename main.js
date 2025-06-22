@@ -145,7 +145,7 @@ loader.load('Untitled.glb', (gltf) => {
     model.scale.set(1.25, 1.25, 1.25);
     model.rotation.y = Math.PI; // Corrective rotation
     
-    const newMaterial = new THREE.MeshStandardMaterial({ color: #003334 });
+    const newMaterial = new THREE.MeshStandardMaterial({ color: 0x4d0f0f });
     model.traverse((child) => {
         if (child.isMesh) {
             child.material = newMaterial;
