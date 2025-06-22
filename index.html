@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slowroads 3D</title>
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body { 
+            margin: 0; 
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden; /* Hide scrollbars */
+        }
+        canvas { display: block; }
+        #start-screen {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+        #start-button {
+            padding: 25px 50px;
+            font-size: 36px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: 5px solid black;
+            border-radius: 5px;
+            margin-bottom: 20px; /* Add some space between button and text */
+        }
+        #credit-text {
+            color: white;
+            font-family: sans-serif;
+            font-size: 18px;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+        #lives-container, #distance-container {
+            position: absolute;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            font-size: 80px;
+            display: none;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+        #lives-container {
+            top: 10px;
+            left: 10px;
+        }
+        #distance-container {
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="start-screen">
+        <button id="start-button">Start Game</button>
+        <div id="credit-text">
+            <p>An Obstacle Driving Game</p>
+            <p>made by Karan Garg</p>
+        </div>
+    </div>
+    <div id="lives-container">Lives: <span id="lives-count">3</span></div>
+    <div id="distance-container">Distance: <span id="distance-count">0</span>m</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <script type="module" src="main.js"></script>
+</body>
+</html> 
