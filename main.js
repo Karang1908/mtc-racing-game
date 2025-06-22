@@ -1,4 +1,4 @@
-// Basic Three.js scene setup
+// threejs
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);
 scene.fog = new THREE.Fog(0x87ceeb, 50, 200);
@@ -9,12 +9,12 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Lighting
+// sunlight
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(0, 1, 0.5);
 scene.add(light);
 
-// Road
+// road
 const roadWidth = 30;
 const segmentLength = 20;
 const numSegments = 20;
@@ -49,7 +49,7 @@ objLoader.load('low_poly_tree/Lowpoly_tree_sample.obj', (obj) => {
     treeModel = obj;
     treeModel.scale.set(0.32, 0.32, 0.32); // Adjust scale as needed
     
-    // Apply a green material
+    // green tree
     const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x006400 });
     treeModel.traverse((child) => {
         if (child.isMesh) {
@@ -57,7 +57,7 @@ objLoader.load('low_poly_tree/Lowpoly_tree_sample.obj', (obj) => {
         }
     });
 
-    // Initial tree placement
+    // tree locatipon
     for(let i = 0; i < numSegments * 10; i++) {
         const tree = treeModel.clone();
         const segmentIndex = Math.floor(i / 10);
@@ -81,7 +81,7 @@ for(let i = 0; i < numSegments; i++) {
     road.rotation.x = -Math.PI / 2;
     segmentGroup.add(road);
 
-    // Add dashed lines
+    // road lines
     const lineMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const dashLength = 4;
     const gapLength = 2;
@@ -91,14 +91,14 @@ for(let i = 0; i < numSegments; i++) {
     for (let j = 0; j < numDashes; j++) {
         const dashGeometry = new THREE.PlaneGeometry(lineThickness, dashLength);
         
-        // Line 1
+        // line 1
         const dash1 = new THREE.Mesh(dashGeometry, lineMaterial);
         dash1.rotation.x = -Math.PI / 2;
         const zPos = -segmentLength / 2 + j * (dashLength + gapLength) + dashLength / 2;
         dash1.position.set(-roadWidth / 6, 0.01, zPos);
         segmentGroup.add(dash1);
 
-        // Line 2
+        // lne 2
         const dash2 = new THREE.Mesh(dashGeometry.clone(), lineMaterial);
         dash2.rotation.x = -Math.PI / 2;
         dash2.position.set(roadWidth / 6, 0.01, zPos);
@@ -134,7 +134,7 @@ for (let i = 0; i < numObstacles; i++) {
 
 camera.position.set(0, 10, 15);
 
-// Car
+// ferrari car (ps: I'll never be happy) :(
 const car = new THREE.Group();
 car.position.set(0, 1, 0);
 scene.add(car);
@@ -197,37 +197,37 @@ function animate() {
     }
     animationFrameId = requestAnimationFrame(animate);
 
-    // Don't start animation until model is loaded
+    
     if (car.children.length === 0) return;
 
-    // Update distance
+    // distance update
     distance += carSpeed * 0.1; // Adjust multiplier for desired "speed" of distance accumulation
     distanceCountElement.innerText = Math.floor(distance) + 'm';
 
-    // Handle Controls
+    // control
     if (keys.w) {
         carSpeed = Math.min(carSpeed + 0.02, 2.0);
     } else if (keys.s) {
         carSpeed = Math.max(carSpeed - 0.02, -0.2);
     } else {
-        // Decelerate
+        // s
         if (carSpeed > 0) carSpeed = Math.max(carSpeed - 0.01, 0);
         if (carSpeed < 0) carSpeed = Math.min(carSpeed + 0.01, 0);
     }
 
-    if(keys.d) { // Steer Right
+    if(keys.d) { // rihgt
         carSteering = Math.min(carSteering + 0.2, 0.7);
-    } else if(keys.a) { // Steer Left
+    } else if(keys.a) { // left
         carSteering = Math.max(carSteering - 0.2, -0.7);
     } else {
-        // Straighten wheel
+        // normal wheel location
         if (carSteering > 0) carSteering = Math.max(carSteering - 0.02, 0);
         if (carSteering < 0) carSteering = Math.min(carSteering + 0.02, 0);
     }
     
     car.rotation.y = -carSteering;
     
-    // Move the world toward the camera
+    // world move
     roadSegments.forEach(segment => {
         segment.position.z += carSpeed * 2;
     });
@@ -238,22 +238,22 @@ function animate() {
         tree.position.z += carSpeed * 2;
     });
 
-    // Recycle road, ground, and tree segments
+    // recycle road
     const firstRoadSegment = roadSegments[0];
     if (firstRoadSegment.position.z > camera.position.z) {
         const lastRoadSegment = roadSegments[roadSegments.length - 1];
         const newZ = lastRoadSegment.position.z - segmentLength;
         
-        // Move road segment
+        // road
         firstRoadSegment.position.z = newZ;
         roadSegments.push(roadSegments.shift());
 
-        // Move ground segment
+        //gorund
         const firstGroundSegment = groundSegments[0];
         firstGroundSegment.position.z = newZ;
         groundSegments.push(groundSegments.shift());
 
-        // Move a batch of trees
+        // trees move
         if (treeModel) {
             for (let i = 0; i < 10; i++) {
                 const tree = trees.shift();
